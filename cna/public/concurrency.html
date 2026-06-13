@@ -2,10 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Concurrency</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concurrency Simulator - Computer Networks Academy</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <script src="/public/app.js" defer></script>
 </head>
 <body>
-  <h1>Concurrency</h1>
-  <p>TODO: Add the static concurrency simulator.</p>
+  <header class="site-header">
+    <a class="brand" href="/">Computer Networks Academy</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/public/academy.html">Academy</a>
+      <a href="/public/status-codes.html">Status Codes</a>
+      <a href="/public/concurrency.html" aria-current="page">Concurrency</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title simulator-title">
+      <p class="eyebrow">Main game</p>
+      <h1>Concurrency Simulator</h1>
+      <p class="lede">
+        Launch several browser clients at once and watch each accepted socket receive its own server
+        thread before the HTTP response returns.
+      </p>
+    </section>
+
+    <section class="simulator-shell" data-concurrency-simulator>
+      <div class="simulator-controls">
+        <label for="client-count">Clients</label>
+        <input id="client-count" data-client-count type="range" min="1" max="12" value="6">
+        <output data-client-output for="client-count">6</output>
+        <button class="button primary" type="button" data-start-sim>Start</button>
+        <button class="button secondary" type="button" data-reset-sim>Reset</button>
+      </div>
+
+      <div class="legend-row" aria-label="Simulation stage labels">
+        <span><b class="legend-dot client-dot"></b>TCP connection</span>
+        <span><b class="legend-dot request-dot"></b>HTTP request</span>
+        <span><b class="legend-dot thread-dot"></b>Server thread</span>
+        <span><b class="legend-dot response-dot"></b>HTTP response</span>
+      </div>
+
+      <div class="simulation-stage" aria-label="Concurrency simulator">
+        <div class="stage-column clients-column">
+          <h2>Clients</h2>
+          <div class="client-list" data-client-list></div>
+        </div>
+        <div class="stage-column lanes-column">
+          <h2>Connection lanes</h2>
+          <div class="lane-list" data-lane-list></div>
+        </div>
+        <div class="stage-column server-column">
+          <h2>Socket server</h2>
+          <div class="server-core">
+            <span>accept()</span>
+            <strong>Thread per client</strong>
+          </div>
+          <div class="thread-list" data-thread-list></div>
+        </div>
+        <div class="stage-column response-column">
+          <h2>Responses</h2>
+          <div class="response-list" data-response-list></div>
+        </div>
+      </div>
+
+      <div class="simulator-score">
+        <span data-active-count>0 active</span>
+        <span data-complete-count>0 complete</span>
+        <span data-sim-message>Ready to accept client connections.</span>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

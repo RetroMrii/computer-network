@@ -2,10 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academy - Computer Networks Academy</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <script src="/public/app.js" defer></script>
 </head>
 <body>
-  <h1>Academy</h1>
-  <p>TODO: Explain the socket lifecycle and HTTP request-response flow.</p>
+  <header class="site-header">
+    <a class="brand" href="/">Computer Networks Academy</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/public/academy.html" aria-current="page">Academy</a>
+      <a href="/public/status-codes.html">Status Codes</a>
+      <a href="/public/concurrency.html">Concurrency</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <p class="eyebrow">Socket lifecycle</p>
+      <h1>From TCP connection to HTTP response</h1>
+      <p class="lede">
+        The backend is intentionally low level: it accepts a socket, reads bytes until the header is
+        complete, parses text by hand, and returns a single static-file response.
+      </p>
+    </section>
+
+    <section class="split-section">
+      <img class="diagram-image" src="/images/network-map.svg" alt="Clients connecting to a threaded socket server">
+      <div class="info-stack">
+        <article>
+          <h2>1. Accept</h2>
+          <p>The listening socket accepts a client connection and hands it to a worker thread.</p>
+        </article>
+        <article>
+          <h2>2. Buffer</h2>
+          <p>The worker keeps reading bytes until the HTTP header terminator arrives.</p>
+        </article>
+        <article>
+          <h2>3. Parse</h2>
+          <p>The request line is split into method, path, and version.</p>
+        </article>
+        <article>
+          <h2>4. Serve</h2>
+          <p>Allowed static files are returned with HTTP/1.0 headers and raw body bytes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="protocol-board">
+      <div>
+        <h2>Request line anatomy</h2>
+        <p>The parser expects exactly three fields. Non-GET methods are syntactically valid, then rejected later with 405.</p>
+      </div>
+      <div class="request-line" aria-label="HTTP request line parts">
+        <span>GET</span>
+        <span>/public/index.html</span>
+        <span>HTTP/1.0</span>
+      </div>
+    </section>
+
+    <section class="split-section reverse">
+      <div class="info-stack">
+        <article>
+          <h2>Manual response bytes</h2>
+          <p>Responses include a status line, Content-Length, Content-Type, Connection: close, a blank line, and body bytes.</p>
+        </article>
+        <article>
+          <h2>Stateless by design</h2>
+          <p>Each connection handles one request. No cookies, sessions, templates, routes, or backend APIs are involved.</p>
+        </article>
+      </div>
+      <img class="diagram-image" src="/images/http-flow.svg" alt="HTTP request bytes and response bytes">
+    </section>
+  </main>
 </body>
 </html>

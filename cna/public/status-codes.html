@@ -2,10 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Status Codes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Status Codes - Computer Networks Academy</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <script src="/public/app.js" defer></script>
 </head>
 <body>
-  <h1>Status Codes</h1>
-  <p>TODO: Add the status-code learning page.</p>
+  <header class="site-header">
+    <a class="brand" href="/">Computer Networks Academy</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/public/academy.html">Academy</a>
+      <a href="/public/status-codes.html" aria-current="page">Status Codes</a>
+      <a href="/public/concurrency.html">Concurrency</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <p class="eyebrow">Response training</p>
+      <h1>Status-code challenge board</h1>
+      <p class="lede">
+        These are the server outcomes the assignment checks. Pick a scenario below and match it to
+        the response code returned by the backend.
+      </p>
+    </section>
+
+    <section class="status-grid" aria-label="HTTP status code explanations">
+      <article class="status-card success">
+        <strong>200 OK</strong>
+        <p>Existing static file in an allowed directory.</p>
+        <code>GET /public/index.html HTTP/1.0</code>
+      </article>
+      <article class="status-card warning">
+        <strong>400 Bad Request</strong>
+        <p>Malformed syntax or decoded directory traversal.</p>
+        <code>GET /../../etc/passwd HTTP/1.0</code>
+      </article>
+      <article class="status-card blocked">
+        <strong>403 Forbidden</strong>
+        <p>Valid path syntax, but a blocked top-level directory.</p>
+        <code>GET /private/secret.txt HTTP/1.0</code>
+      </article>
+      <article class="status-card missing">
+        <strong>404 Not Found</strong>
+        <p>Allowed directory, but the file is missing or the path is a directory.</p>
+        <code>GET /public/missing.html HTTP/1.0</code>
+      </article>
+      <article class="status-card method">
+        <strong>405 Method Not Allowed</strong>
+        <p>Request line is valid, but the method is not GET.</p>
+        <code>POST /public/index.html HTTP/1.0</code>
+      </article>
+    </section>
+
+    <section class="challenge-panel" data-status-game>
+      <div>
+        <p class="eyebrow">Mini challenge</p>
+        <h2 id="scenario-title">Choose the matching response</h2>
+        <p id="scenario-text">Scenario: a client requests an existing academy file with GET.</p>
+      </div>
+      <div class="code-choice-grid" aria-label="Status code answer choices">
+        <button type="button" data-answer="200">200</button>
+        <button type="button" data-answer="400">400</button>
+        <button type="button" data-answer="403">403</button>
+        <button type="button" data-answer="404">404</button>
+        <button type="button" data-answer="405">405</button>
+      </div>
+      <p class="challenge-result" id="status-result" aria-live="polite">Score: 0 / 0</p>
+      <button class="button secondary" type="button" data-next-scenario>Next Scenario</button>
+    </section>
+  </main>
 </body>
 </html>

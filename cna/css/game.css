@@ -1,1 +1,276 @@
-/* TODO: Add game and simulator styles in the frontend stage. */
+.simulator-title {
+  margin-bottom: 20px;
+}
+
+.simulator-controls {
+  display: grid;
+  grid-template-columns: auto minmax(150px, 1fr) auto auto auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.simulator-controls label,
+.simulator-controls output {
+  font-weight: 800;
+}
+
+.simulator-controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--teal);
+}
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.legend-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.client-dot {
+  background: var(--teal);
+}
+
+.request-dot {
+  background: var(--gold);
+}
+
+.thread-dot {
+  background: var(--blue);
+}
+
+.response-dot {
+  background: var(--green);
+}
+
+.simulation-stage {
+  display: grid;
+  grid-template-columns: 0.85fr 1.25fr 1fr 1.1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.stage-column {
+  min-width: 0;
+  min-height: 420px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.stage-column h2 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.client-list,
+.lane-list,
+.thread-list,
+.response-list {
+  display: grid;
+  gap: 8px;
+}
+
+.client-node,
+.connection-lane,
+.thread-node,
+.response-node {
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.client-node.active {
+  border-color: #7ccdc1;
+  background: #e6f7f4;
+  color: var(--teal-dark);
+  transform: translateX(3px);
+}
+
+.client-node.done {
+  background: #ecfdf0;
+  border-color: #94d7ab;
+  color: var(--green);
+}
+
+.connection-lane {
+  position: relative;
+  overflow: hidden;
+}
+
+.connection-lane::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: rgba(15, 118, 110, 0.12);
+  transition: width 500ms ease;
+}
+
+.connection-lane.tcp::after {
+  width: 38%;
+}
+
+.connection-lane.request {
+  border-color: #e3ba63;
+  color: #7a4b00;
+}
+
+.connection-lane.request::after {
+  width: 68%;
+  background: rgba(183, 121, 31, 0.16);
+}
+
+.connection-lane.response {
+  border-color: #8bd1a2;
+  color: var(--green);
+}
+
+.connection-lane.response::after {
+  width: 100%;
+  background: rgba(22, 128, 60, 0.16);
+}
+
+.server-core {
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  min-height: 94px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 2px solid var(--teal);
+  border-radius: 8px;
+  background: #edf9f6;
+  text-align: center;
+}
+
+.server-core span {
+  color: var(--teal-dark);
+  font-family: Consolas, Monaco, monospace;
+  font-weight: 800;
+}
+
+.thread-node.busy {
+  border-color: #9db7f4;
+  background: #eef4ff;
+  color: var(--blue);
+  transform: translateX(3px);
+}
+
+.thread-node.done {
+  border-color: #8bd1a2;
+  background: #ecfdf0;
+  color: var(--green);
+}
+
+.response-node.done {
+  border-color: #8bd1a2;
+  background: #ecfdf0;
+  color: var(--green);
+}
+
+.simulator-score {
+  display: grid;
+  grid-template-columns: auto auto minmax(240px, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.simulator-score span {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--muted);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.challenge-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.code-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.code-choice-grid button {
+  background: #ffffff;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.code-choice-grid button.correct {
+  background: #ecfdf0;
+  border-color: #78c995;
+  color: var(--green);
+}
+
+.code-choice-grid button.wrong {
+  background: #fff1f0;
+  border-color: #f0a49d;
+  color: var(--red);
+}
+
+.code-choice-grid button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.challenge-result {
+  margin: 0;
+  min-height: 32px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+@media (max-width: 1050px) {
+  .simulation-stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .simulator-controls,
+  .simulation-stage,
+  .simulator-score,
+  .code-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-column {
+    min-height: auto;
+  }
+}

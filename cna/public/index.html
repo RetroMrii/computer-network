@@ -2,10 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Computer Networks Academy</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <script src="/public/app.js" defer></script>
 </head>
 <body>
-  <h1>Computer Networks Academy</h1>
-  <p>TODO: Build the static homepage in the frontend stage.</p>
+  <header class="site-header">
+    <a class="brand" href="/">Computer Networks Academy</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/public/academy.html">Academy</a>
+      <a href="/public/status-codes.html">Status Codes</a>
+      <a href="/public/concurrency.html">Concurrency</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero compact-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">HTTP/1.0 from raw TCP sockets</p>
+        <h1>Computer Networks Academy</h1>
+        <p class="lede">
+          A static learning site served by a custom Python socket server. Every page, stylesheet,
+          script, and SVG asset is delivered as bytes over one request and one response.
+        </p>
+        <div class="hero-actions" aria-label="Page links">
+          <a class="button primary" href="/public/concurrency.html">Run Simulator</a>
+          <a class="button secondary" href="/public/academy.html">Study Flow</a>
+        </div>
+      </div>
+      <img class="hero-image" src="/images/http-flow.svg" alt="HTTP request and response flow diagram">
+    </section>
+
+    <section class="proof-grid" aria-label="Static asset proof">
+      <article>
+        <span class="proof-mark html-mark">HTML</span>
+        <h2>Static pages</h2>
+        <p>Routes under <code>/public</code> render course material and simulator screens.</p>
+      </article>
+      <article>
+        <span class="proof-mark css-mark">CSS</span>
+        <h2>Local styling</h2>
+        <p>This layout is styled by files served from <code>/css</code>.</p>
+      </article>
+      <article>
+        <span class="proof-mark js-mark">JS</span>
+        <h2>Client-only game</h2>
+        <p>The concurrency simulator runs locally in the browser without backend APIs.</p>
+      </article>
+      <article>
+        <span class="proof-mark svg-mark">SVG</span>
+        <h2>Local diagrams</h2>
+        <p>Network diagrams are SVG files served from <code>/images</code>.</p>
+      </article>
+    </section>
+
+    <section class="learning-map">
+      <div>
+        <p class="eyebrow">Assignment checkpoints</p>
+        <h2>Follow one request through the server</h2>
+        <p>
+          Open a page, watch the server accept the TCP connection, parse the request line, validate
+          the path, choose a MIME type, build an HTTP/1.0 response, and close the connection.
+        </p>
+      </div>
+      <ol class="step-list">
+        <li><span>1</span> TCP connection accepted</li>
+        <li><span>2</span> Header bytes buffered until CRLF CRLF</li>
+        <li><span>3</span> Request line parsed manually</li>
+        <li><span>4</span> Static path checked for traversal</li>
+        <li><span>5</span> Response bytes returned with Content-Length</li>
+      </ol>
+    </section>
+
+    <section class="route-panel">
+      <div>
+        <h2>Allowed demo routes</h2>
+        <p>These links stay inside the assignment-approved static roots.</p>
+      </div>
+      <div class="route-grid">
+        <a href="/">/</a>
+        <a href="/public/academy.html">/public/academy.html</a>
+        <a href="/public/status-codes.html">/public/status-codes.html</a>
+        <a href="/public/concurrency.html">/public/concurrency.html</a>
+        <a href="/css/style.css">/css/style.css</a>
+        <a href="/images/network-map.svg">/images/network-map.svg</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
