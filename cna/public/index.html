@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,25 +9,28 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="/public/app.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="/">Computer Networks Academy</a>
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="nav-links" aria-label="Primary navigation">
       <a href="/">Home</a>
-      <a href="/public/academy.html">Academy</a>
-      <a href="/public/status-codes.html">Status Codes</a>
-      <a href="/public/concurrency.html">Concurrency</a>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <span class="theme-toggle-icon" data-theme-icon>☾</span>
+        <span data-theme-label>Dark</span>
+      </button>
     </nav>
   </header>
 
   <main>
     <section class="hero compact-hero">
       <div class="hero-copy">
-        <p class="eyebrow">HTTP/1.0 from raw TCP sockets</p>
-        <h1>Computer Networks Academy</h1>
+        <h1>Threaded server simulator</h1>
         <p class="lede">
-          A static learning site served by a custom Python socket server. Every page, stylesheet,
-          script, and SVG asset is delivered as bytes over one request and one response.
+          Computer Networks Academy is a static learning site served by a custom Python socket server.
+          Start with the concurrency game, then study how requests, paths, status codes, and response
+          bytes move through the server.
         </p>
         <div class="hero-actions" aria-label="Page links">
           <a class="button primary" href="/public/concurrency.html">Run Simulator</a>
@@ -34,6 +38,27 @@
         </div>
       </div>
       <img class="hero-image" src="/images/http-flow.svg" alt="HTTP request and response flow diagram">
+    </section>
+
+
+
+    <section class="page-card-grid" aria-label="Learning pages">
+      <a class="page-card featured" href="/public/concurrency.html">
+        <span class="card-kicker">Main game</span>
+        <h2>Concurrency Simulator</h2>
+        <p>Launch multiple virtual clients and watch the server assign one thread to each accepted TCP connection.</p>
+      </a>
+      <a class="page-card" href="/public/academy.html">
+        <span class="card-kicker">System walkthrough</span>
+        <h2>Academy</h2>
+        <p>Follow a request from raw bytes to request parsing, path validation, MIME selection, and response
+          construction.</p>
+      </a>
+      <a class="page-card" href="/public/status-codes.html">
+        <span class="card-kicker">Error handling game</span>
+        <h2>Status Codes</h2>
+        <p>Match realistic request scenarios to 200, 400, 403, 404, and 405 responses.</p>
+      </a>
     </section>
 
     <section class="proof-grid" aria-label="Static asset proof">
@@ -93,4 +118,5 @@
     </section>
   </main>
 </body>
+
 </html>

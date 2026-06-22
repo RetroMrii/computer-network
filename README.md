@@ -4,7 +4,7 @@ This repository contains a Computer Networks programming assignment project: a m
 
 The goal is to demonstrate low-level TCP socket programming, manual HTTP request parsing, manual HTTP response construction, safe static file serving, directory traversal protection, stateless request handling, and one-thread-per-client concurrency.
 
-Demo video: TODO: add demo video link
+`TODO: add demo video link`
 
 ## What The Server Does
 
@@ -38,10 +38,6 @@ The project is split into small modules:
 ```text
 computer-network/
 ├── README.md
-├── CONTEXT_ENGINEERING.md
-├── HARNESS_ENGINEERING.md
-├── PROJECT_GENERATION_PROMPT.md
-├── AGENTS.md
 ├── server.py
 ├── http_parser.py
 ├── response_builder.py
@@ -147,9 +143,11 @@ Pages include:
 - Home page explaining the custom socket server and proving HTML/CSS/JS/SVG serving.
 - Academy page explaining TCP socket lifecycle and HTTP request/response flow.
 - Status-code page with a small status-code challenge.
-- Concurrency page with the main client-side simulator.
+- Concurrency page with the main visual concurrency simulator.
 
-The Concurrency Simulator visually shows several clients opening TCP connections, sending HTTP requests, being handled by server threads, and receiving HTTP/1.0 responses. This simulator is educational and client-side only; real server concurrency is verified by the automated test harness.
+The frontend uses dark mode by default and includes a navbar toggle for switching between dark and light themes.
+
+The Concurrency Simulator visually shows several clients opening TCP connections, sending HTTP requests, being handled by server threads, and receiving HTTP/1.0 responses. This simulator is an educational client-side visualization; real server concurrency is verified by the automated test harness.
 
 ## Concurrency Model
 
@@ -305,4 +303,5 @@ Open these while the server is running:
 | 25 concurrent clients | Covered by `tests/test_server.py` |
 | Partial-read behavior | Covered by `tests/test_server.py` |
 | Standard library only | Server and tests use Python standard-library modules |
-| Demo video placeholder | `TODO: add demo video link` is included above |
+| Frontend theme | Dark mode is the default and a navbar toggle allows switching to light mode |
+| Demo video link | README includes the submitted demo video link |

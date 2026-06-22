@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,14 +9,17 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="/public/app.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="/">Computer Networks Academy</a>
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="nav-links" aria-label="Primary navigation">
       <a href="/">Home</a>
-      <a href="/public/academy.html">Academy</a>
-      <a href="/public/status-codes.html">Status Codes</a>
-      <a href="/public/concurrency.html" aria-current="page">Concurrency</a>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <span class="theme-toggle-icon" data-theme-icon>☾</span>
+        <span data-theme-label>Dark</span>
+      </button>
     </nav>
   </header>
 
@@ -73,7 +77,59 @@
         <span data-complete-count>0 complete</span>
         <span data-sim-message>Ready to accept client connections.</span>
       </div>
+
+      <section class="simulation-explanation" data-sim-explanation hidden>
+        <p class="eyebrow">What just happened?</p>
+        <h2>Each client was handled independently</h2>
+        <p>
+          The simulator showed several clients connecting to the server at almost the same time.
+          Instead of making every client wait in one long line, the server accepted each TCP
+          connection and assigned it to a separate worker thread.
+        </p>
+
+        <div class="explanation-grid">
+          <article>
+            <h3>1. TCP connection opened</h3>
+            <p>
+              Each browser/client first opened a TCP connection to the server socket. The server
+              was already listening on its configured host and port.
+            </p>
+          </article>
+
+          <article>
+            <h3>2. The server accepted the client</h3>
+            <p>
+              The server's accept loop received the connection. In the real Python code, each
+              accepted client socket is passed to a separate thread.
+            </p>
+          </article>
+
+          <article>
+            <h3>3. HTTP request was read</h3>
+            <p>
+              The worker thread read raw bytes from the socket until the HTTP header ended with
+              the required blank-line marker: <code>\r\n\r\n</code>.
+            </p>
+          </article>
+
+          <article>
+            <h3>4. The response was returned</h3>
+            <p>
+              After parsing the request and finding the static file, the server built an HTTP/1.0
+              response with headers such as <code>Content-Length</code> and
+              <code>Content-Type</code>, sent the file bytes, and closed the connection.
+            </p>
+          </article>
+        </div>
+
+        <p class="explanation-summary">
+          The key idea is concurrency: a slow or busy client should not freeze the entire server.
+          Each connection gets handled separately, so multiple clients can be served during the
+          same time window.
+        </p>
+      </section>
     </section>
   </main>
 </body>
+
 </html>

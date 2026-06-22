@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,24 +9,28 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="/public/app.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="/">Computer Networks Academy</a>
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="nav-links" aria-label="Primary navigation">
       <a href="/">Home</a>
-      <a href="/public/academy.html" aria-current="page">Academy</a>
-      <a href="/public/status-codes.html">Status Codes</a>
-      <a href="/public/concurrency.html">Concurrency</a>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <span class="theme-toggle-icon" data-theme-icon>☾</span>
+        <span data-theme-label>Dark</span>
+      </button>
     </nav>
   </header>
 
   <main>
     <section class="page-title">
-      <p class="eyebrow">Socket lifecycle</p>
-      <h1>From TCP connection to HTTP response</h1>
+      <p class="eyebrow">How the server works</p>
+      <h1>From a TCP connection to a complete HTTP/1.0 response</h1>
       <p class="lede">
-        The backend is intentionally low level: it accepts a socket, reads bytes until the header is
-        complete, parses text by hand, and returns a single static-file response.
+        This server is built as a learning model of the web stack. It does not hide the network layer
+        behind a web framework: it opens a socket, accepts client connections, reads raw bytes,
+        interprets the HTTP text, chooses a static file, and writes response bytes back to the client.
       </p>
     </section>
 
@@ -33,20 +38,24 @@
       <img class="diagram-image" src="/images/network-map.svg" alt="Clients connecting to a threaded socket server">
       <div class="info-stack">
         <article>
-          <h2>1. Accept</h2>
-          <p>The listening socket accepts a client connection and hands it to a worker thread.</p>
+          <h2>1. Socket setup</h2>
+          <p>The server creates a TCP socket, binds it to the selected host and port, listens for clients, and accepts
+            incoming connections.</p>
         </article>
         <article>
-          <h2>2. Buffer</h2>
-          <p>The worker keeps reading bytes until the HTTP header terminator arrives.</p>
+          <h2>2. Threaded handling</h2>
+          <p>Each accepted client is handed to a separate worker thread so one slow connection does not stop other
+            clients from being served.</p>
         </article>
         <article>
-          <h2>3. Parse</h2>
-          <p>The request line is split into method, path, and version.</p>
+          <h2>3. Stream buffering</h2>
+          <p>The worker reads from the socket repeatedly until the HTTP header terminator arrives. This matters because
+            TCP is a byte stream, not a message protocol.</p>
         </article>
         <article>
-          <h2>4. Serve</h2>
-          <p>Allowed static files are returned with HTTP/1.0 headers and raw body bytes.</p>
+          <h2>4. Manual parsing</h2>
+          <p>The request line is interpreted as text and split into the method, path, and HTTP version without using a
+            routing engine or web-server library.</p>
         </article>
       </div>
     </section>
@@ -54,7 +63,8 @@
     <section class="protocol-board">
       <div>
         <h2>Request line anatomy</h2>
-        <p>The parser expects exactly three fields. Non-GET methods are syntactically valid, then rejected later with 405.</p>
+        <p>The request line has three meaningful fields. The method decides whether the request can be served, the path
+          decides which static file is requested, and the version identifies the HTTP syntax.</p>
       </div>
       <div class="request-line" aria-label="HTTP request line parts">
         <span>GET</span>
@@ -63,19 +73,50 @@
       </div>
     </section>
 
+    <section class="learning-map">
+      <div>
+        <p class="eyebrow">Safety and correctness</p>
+        <h2>Every path is checked before any file is opened</h2>
+        <p>
+          The server decodes URL paths, rejects traversal attempts, and only serves files from the approved static
+          roots. This keeps a request from escaping the website directory or reading private local files.
+        </p>
+      </div>
+      <ol class="step-list">
+        <li><span>1</span> Decode the URL path</li>
+        <li><span>2</span> Reject <code>..</code> traversal</li>
+        <li><span>3</span> Check the first directory</li>
+        <li><span>4</span> Resolve the path inside <code>cna/</code></li>
+        <li><span>5</span> Serve only existing static files</li>
+      </ol>
+    </section>
+
     <section class="split-section reverse">
       <div class="info-stack">
         <article>
-          <h2>Manual response bytes</h2>
-          <p>Responses include a status line, Content-Length, Content-Type, Connection: close, a blank line, and body bytes.</p>
+          <h2>Static files only</h2>
+          <p>The server returns HTML, CSS, JavaScript, and SVG files as static bytes. There are no templates, sessions,
+            cookies, databases, or backend API routes.</p>
         </article>
         <article>
-          <h2>Stateless by design</h2>
-          <p>Each connection handles one request. No cookies, sessions, templates, routes, or backend APIs are involved.</p>
+          <h2>Clear response codes</h2>
+          <p>Successful files receive 200. Malformed or unsafe paths receive 400. Blocked directories receive 403.
+            Missing files receive 404. Unsupported methods receive 405.</p>
+        </article>
+        <article>
+          <h2>HTTP response structure</h2>
+          <p>Every response is assembled with a status line, headers, a blank line, and a body. Content-Length tells the
+            browser exactly how many bytes are in the response body.</p>
+        </article>
+        <article>
+          <h2>One request, one response</h2>
+          <p>After sending the response, the server closes the connection. This keeps the design stateless and makes
+            each request independent.</p>
         </article>
       </div>
       <img class="diagram-image" src="/images/http-flow.svg" alt="HTTP request bytes and response bytes">
     </section>
   </main>
 </body>
+
 </html>

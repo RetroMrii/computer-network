@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,14 +9,17 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="/public/app.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="/">Computer Networks Academy</a>
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="nav-links" aria-label="Primary navigation">
       <a href="/">Home</a>
-      <a href="/public/academy.html">Academy</a>
-      <a href="/public/status-codes.html" aria-current="page">Status Codes</a>
-      <a href="/public/concurrency.html">Concurrency</a>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <span class="theme-toggle-icon" data-theme-icon>☾</span>
+        <span data-theme-label>Dark</span>
+      </button>
     </nav>
   </header>
 
@@ -75,4 +79,5 @@
     </section>
   </main>
 </body>
+
 </html>

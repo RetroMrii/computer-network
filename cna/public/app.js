@@ -27,6 +27,50 @@
     }
   ];
 
+  function setupThemeToggle() {
+    const root = document.documentElement;
+    const toggle = document.querySelector("[data-theme-toggle]");
+    const label = document.querySelector("[data-theme-label]");
+    const icon = document.querySelector("[data-theme-icon]");
+
+    const savedTheme = localStorage.getItem("cna-theme");
+    const initialTheme = savedTheme || "dark";
+
+    applyTheme(initialTheme);
+
+    if (!toggle) {
+      return;
+    }
+
+    toggle.addEventListener("click", () => {
+      const currentTheme = root.dataset.theme === "dark" ? "dark" : "light";
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+      applyTheme(nextTheme);
+      localStorage.setItem("cna-theme", nextTheme);
+    });
+
+    function applyTheme(theme) {
+      const normalizedTheme = theme === "light" ? "light" : "dark";
+      root.dataset.theme = normalizedTheme;
+
+      if (label) {
+        label.textContent = normalizedTheme === "dark" ? "Dark" : "Light";
+      }
+
+      if (icon) {
+        icon.textContent = normalizedTheme === "dark" ? "☾" : "☀";
+      }
+
+      if (toggle) {
+        toggle.setAttribute(
+          "aria-label",
+          normalizedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+        );
+      }
+    }
+  }
+
   function ready(callback) {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", callback);
@@ -36,6 +80,7 @@
   }
 
   ready(() => {
+    setupThemeToggle();
     setupConcurrencySimulator();
     setupStatusGame();
   });
@@ -57,6 +102,7 @@
     const activeCount = root.querySelector("[data-active-count]");
     const completeCount = root.querySelector("[data-complete-count]");
     const message = root.querySelector("[data-sim-message]");
+    const explanation = root.querySelector("[data-sim-explanation]");
     let timers = [];
     let completed = 0;
 
@@ -100,6 +146,12 @@
 
       updateCounts(total);
       setMessage("Ready to accept client connections.");
+
+      if (explanation) {
+        explanation.hidden = true;
+        explanation.classList.remove("is-visible");
+      }
+
       root.classList.remove("is-running");
     }
 
@@ -110,6 +162,7 @@
 
     function startSimulation() {
       resetSimulation();
+
       const total = Number(countInput.value);
       const clients = [...clientList.children];
       const lanes = [...laneList.children];
@@ -121,6 +174,7 @@
 
       clients.forEach((client, index) => {
         const start = index * 140;
+
         schedule(() => {
           client.classList.add("active");
           client.textContent = `Client ${index + 1}: TCP`;
@@ -143,11 +197,20 @@
           threads[index].classList.remove("busy");
           threads[index].classList.add("done");
           clients[index].classList.add("done");
+
           completed += 1;
           updateCounts(total);
+
           if (completed === total) {
             root.classList.remove("is-running");
             setMessage("All responses returned. Each connection is closed.");
+
+            if (explanation) {
+              explanation.hidden = false;
+              window.requestAnimationFrame(() => {
+                explanation.classList.add("is-visible");
+              });
+            }
           }
         }, start + 900 + (index % 4) * 120);
       });
@@ -156,6 +219,7 @@
     countInput.addEventListener("input", resetSimulation);
     startButton.addEventListener("click", startSimulation);
     resetButton.addEventListener("click", resetSimulation);
+
     resetSimulation();
   }
 
@@ -176,6 +240,7 @@
     function renderScenario() {
       const scenario = statusScenarios[scenarioIndex];
       scenarioText.textContent = scenario.text;
+
       answerButtons.forEach((button) => {
         button.disabled = false;
         button.classList.remove("correct", "wrong");
@@ -186,6 +251,7 @@
       button.addEventListener("click", () => {
         const scenario = statusScenarios[scenarioIndex];
         attempts += 1;
+
         if (button.dataset.answer === scenario.answer) {
           score += 1;
           button.classList.add("correct");
@@ -194,8 +260,10 @@
           button.classList.add("wrong");
           result.textContent = `Not this one. ${scenario.note} Score: ${score} / ${attempts}`;
         }
+
         answerButtons.forEach((choice) => {
           choice.disabled = true;
+
           if (choice.dataset.answer === scenario.answer) {
             choice.classList.add("correct");
           }
