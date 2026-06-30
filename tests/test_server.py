@@ -46,6 +46,12 @@ def raw_http_request(port: int, payload: bytes) -> bytes:
         return b"".join(chunks)
 
 
+def test_index_html_alias_returns_homepage(self):
+    response = self.request("GET", "/index.html")
+    self.assertEqual(response.status, 200)
+    self.assertIn("text/html", response.getheader("Content-Type", ""))
+
+
 def split_headers_and_body(response: bytes) -> tuple[bytes, bytes]:
     return response.split(b"\r\n\r\n", 1)
 
@@ -208,7 +214,9 @@ class WebServerHarnessTests(unittest.TestCase):
         self.assertEqual(reason, "Bad Request")
 
     def test_partial_header_read_returns_200(self) -> None:
-        with socket.create_connection((HOST, self.port), timeout=CLIENT_TIMEOUT) as sock:
+        with socket.create_connection(
+            (HOST, self.port), timeout=CLIENT_TIMEOUT
+        ) as sock:
             sock.settimeout(CLIENT_TIMEOUT)
             sock.sendall(b"GET /public/index.html HTTP/1.0\r\n")
             time.sleep(0.1)

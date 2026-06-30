@@ -23,7 +23,9 @@ class PathValidationResult:
         return self.status_code == 200 and self.filesystem_path is not None
 
 
-def resolve_static_path(raw_url_path: str, static_root: str | Path) -> PathValidationResult:
+def resolve_static_path(
+    raw_url_path: str, static_root: str | Path
+) -> PathValidationResult:
     path_without_query = _strip_query_and_fragment(raw_url_path)
     decoded_path = unquote(path_without_query)
 
@@ -32,7 +34,9 @@ def resolve_static_path(raw_url_path: str, static_root: str | Path) -> PathValid
     if _contains_traversal(decoded_path):
         return _bad_request(decoded_path)
 
-    mapped_path = INDEX_URL_PATH if decoded_path == "/" else decoded_path
+    mapped_path = (
+        INDEX_URL_PATH if decoded_path in {"/", "/index.html"} else decoded_path
+    )
     if _directory_root(mapped_path) not in ALLOWED_DIRECTORY_ROOTS:
         return _forbidden(decoded_path)
 
